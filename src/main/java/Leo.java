@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Leo {
     public static void main(String[] args) {
         String logo = " ____        _        \n"
@@ -8,7 +10,7 @@ public class Leo {
         System.out.println("Hello from\n" + logo);
 
         greet();
-        exit();
+        echo();
     }
     public static void greet() {
         System.out.println("__________________________________________________________________");
@@ -17,7 +19,23 @@ public class Leo {
         System.out.println("__________________________________________________________________");
     }
 
+    public static void echo() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String input = scanner.nextLine();
+            if (input.equals("bye")) {
+                exit();
+                break;
+            }
+            System.out.println("__________________________________________________________________");
+            System.out.println(" " + input);
+            System.out.println("__________________________________________________________________");
+        }
+        scanner.close();
+    }
+
     public static void exit() {
+        System.out.println("__________________________________________________________________");
         System.out.println(" Bye. Hope to see you again soon!");
         System.out.println("__________________________________________________________________");
     }
