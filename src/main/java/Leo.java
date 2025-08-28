@@ -1,8 +1,9 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Leo {
-    private static final Task[] tasksList = new Task[100];
-    private static int numOfTask = 0;
+    private static final List<Task> tasksList = new ArrayList<>();
 
     // To handle printing out error messages
     private static void error(String msg) {
@@ -28,7 +29,6 @@ public class Leo {
         greet();
         run();
     }
-
     public static void greet() {
         System.out.println("__________________________________________________________________");
         System.out.println(" Hello! I'm Leo");
@@ -56,6 +56,8 @@ public class Leo {
                     handleDeadline(input);
                 } else if (input.startsWith("event ")) {
                     handleEvent(input);
+                } else if (input.startsWith("delete ")) {
+                    deleteTask(input);
                 } else {
                     throw new LeoException("Unknown command: " + input);
                 }
@@ -79,14 +81,14 @@ public class Leo {
         int byIdx = body.indexOf(" /by ");
 
         if (byIdx == -1) {
-            throw new LeoException("Wrong format for deadline. Input in this format: deadline <description> /by <deadline>");
+            throw new LeoException("Wrong format. Input: deadline <description> /by <deadline>");
         }
 
         String desc = body.substring(0, byIdx);
         String by = body.substring(byIdx + 5);
 
         if (desc.isEmpty() || by.isEmpty()) {
-            throw new LeoException("Description/Date is empty. Input in this format: deadline <description> /by <deadline>");
+            throw new LeoException("Description/Date is empty. Input: deadline <description> /by <deadline>");
         }
 
         addTask(new Deadline(desc, by));
@@ -98,7 +100,7 @@ public class Leo {
         int toIdx = body.indexOf(" /to ");
 
         if (fromIdx == -1 || toIdx == -1 || toIdx <= fromIdx) {
-            throw new LeoException("Wrong format for event. Input in this format: event <description> /from <start> /to <end>");
+            throw new LeoException("Wrong format. Input:  event <description> /from <start> /to <end>");
         }
 
         String desc = body.substring(0, fromIdx);
@@ -106,7 +108,7 @@ public class Leo {
         String to = body.substring(toIdx + 5);
 
         if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
-            throw new LeoException("Description/Dates are empty. Input in this format: event <description> /from <start> /to <end>");
+            throw new LeoException("Description/Dates are empty. Input:  event <description> /from <start> /to <end>");
         }
 
         addTask(new Event(desc, from, to));
@@ -114,14 +116,16 @@ public class Leo {
 
     private static void mark(String input) throws LeoException {
         // Get the string for number
-        String index = input.substring(5).trim(); // .trim() to be safer
+        String index = input.substring(5).trim();
+        // .trim() to be safer
+
         if (index.isEmpty()) {
             throw new LeoException("No number was inputted");
         }
 
         // Convert to number
         int taskNum = Integer.parseInt(index) - 1;
-        Task currTask = tasksList[taskNum];
+        Task currTask = tasksList.get(taskNum);
         currTask.markAsDone();
 
         System.out.println("__________________________________________________________________");
@@ -132,14 +136,16 @@ public class Leo {
 
     private static void unmark(String input) throws LeoException {
         // Get the string for number
-        String index = input.substring(7).trim(); // .trim() to be safer
+        String index = input.substring(7).trim();
+        // .trim() to be safer
+
         if (index.isEmpty()) {
             throw new LeoException("No number was inputted");
         }
 
         // Convert to number
         int taskNum = Integer.parseInt(index) - 1;
-        Task currTask = tasksList[taskNum];
+        Task currTask = tasksList.get(taskNum);
         currTask.markAsNotDone();
 
         System.out.println("__________________________________________________________________");
@@ -149,21 +155,36 @@ public class Leo {
     }
 
     public static void addTask(Task task) {
-        tasksList[numOfTask] = task;
-        numOfTask++;
+        tasksList.add(task);
 
         System.out.println("__________________________________________________________________");
         System.out.println(" Got it. I've added this task:");
         System.out.println("   " + task);
-        System.out.println(" Now you have " + numOfTask + " tasks in the list.");
+        System.out.println(" Now you have " + tasksList.size() + " tasks in the list.");
+        System.out.println("__________________________________________________________________");
+    }
+
+    private static void deleteTask(String input) throws LeoException {
+        String index = input.substring(7).trim();
+        if (index.isEmpty()) {
+            throw new LeoException("Task number to delete not given");
+        }
+
+        int correctIndex = Integer.parseInt(index) - 1;
+        Task removed = tasksList.remove(correctIndex);
+
+        System.out.println("__________________________________________________________________");
+        System.out.println(" Noted. I've removed this task:");
+        System.out.println("   " + removed);
+        System.out.println(" Now you have " + tasksList.size() + " tasks in the list.");
         System.out.println("__________________________________________________________________");
     }
 
     public static void printTasksList() {
         System.out.println("__________________________________________________________________");
         System.out.println(" Here are the tasks in your list:");
-        for (int i = 0; i < numOfTask; i++) {
-            System.out.println(" " + (i + 1) + ". " + tasksList[i]);
+        for (int i = 0; i < tasksList.size(); i++) {
+            System.out.println(" " + (i + 1) + ". " + tasksList.get(i));
         }
         System.out.println("__________________________________________________________________");
     }
