@@ -21,6 +21,11 @@ public class Task {
         return this.description;
     }
 
+    // when it is true, save to disk
+    public boolean isDone() {
+        return this.isDone;
+    }
+
 
     @Override
     public String toString() {
