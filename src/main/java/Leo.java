@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,14 +96,19 @@ public class Leo {
             throw new LeoException("Wrong format. Input: deadline <description> /by <deadline>");
         }
 
-        String desc = body.substring(0, byIdx);
-        String by = body.substring(byIdx + 5);
+        String desc = body.substring(0, byIdx).trim();
+        String by = body.substring(byIdx + 5).trim();
 
         if (desc.isEmpty() || by.isEmpty()) {
             throw new LeoException("Description/Date is empty. Input: deadline <description> /by <deadline>");
         }
 
-        addTask(new Deadline(desc, by));
+        try {
+            LocalDate parsedBy = LocalDate.parse(by, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            addTask(new Deadline(desc, parsedBy));
+        } catch (Exception e) {
+            throw new LeoException("Invalid date format. Enter like yyyy-MM-dd");
+        }
     }
 
     private static void handleEvent(String input) throws LeoException {

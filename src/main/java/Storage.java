@@ -3,6 +3,8 @@ import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Storage {
@@ -73,7 +75,8 @@ public class Storage {
                 if (parts.length < 4) {
                     return null;
                 }
-                t = new Deadline(desc, parts[3]);
+                LocalDate byDate = LocalDate.parse(parts[3], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                t = new Deadline(desc, byDate);
                 break;
             case "E":
                 if (parts.length < 5) {
@@ -118,7 +121,7 @@ public class Storage {
 
             } else if (t instanceof Deadline) {
                 // D | status | description | by
-                String by = ((Deadline) t).getBy();
+                String by = ((Deadline) t).getBy().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 line = "D | " + status + " | " + t.getDescription() + " | " + by;
             } else if (t instanceof Event) {
                 // E | status | description | from | to
