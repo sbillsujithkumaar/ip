@@ -1,3 +1,9 @@
+package leo.commands;
+
+import leo.Ui;
+import leo.storage.Storage;
+import leo.tasks.TaskList;
+
 public class ExitCommand extends Command {
 
     // Storage, tasks not used: only display bye msg
