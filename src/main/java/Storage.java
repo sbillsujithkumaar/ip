@@ -15,35 +15,41 @@ public class Storage {
         this.filePath = Paths.get(filePath);
     }
 
-    // Load from files
-    public List<Task> load() throws IOException {
+    // Load from files. Catch all IOExceptions here first
+    public List<Task> load() throws LeoException {
 
-        List<Task> tasksList = new ArrayList<>();
+        // Handle all IOExceptions here
+        try {
+            List<Task> tasksList = new ArrayList<>();
 
-        Path parent = filePath.getParent();
-        if (parent != null && !Files.exists(parent)) {
-            Files.createDirectories(parent);
-        }
-
-        // If file doesn't exist, create it and return empty tasksList
-        if (!Files.exists(filePath)) {
-            Files.createFile(filePath);
-            return tasksList;
-        }
-
-        // File exists. Read file as string, format it and then save it
-        Scanner sc = new Scanner(filePath);
-        while (sc.hasNextLine()) {
-            String line = sc.nextLine();
-            Task t = formatLine(line);
-
-            if (t != null) {
-                tasksList.add(t);
+            Path parent = filePath.getParent();
+            if (parent != null && !Files.exists(parent)) {
+                Files.createDirectories(parent);
             }
-        }
-        sc.close();
 
-        return tasksList;
+            // If file doesn't exist, create it and return empty tasksList
+            if (!Files.exists(filePath)) {
+                Files.createFile(filePath);
+                return tasksList;
+            }
+
+            // File exists. Read file as string, format it and then save it
+            Scanner sc = new Scanner(filePath);
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                Task t = formatLine(line);
+
+                if (t != null) {
+                    tasksList.add(t);
+                }
+            }
+            sc.close();
+
+            return tasksList;
+        } catch (IOException e) {
+            // For IOException, throw LeoException
+            throw new LeoException("Storage error: " + e.getMessage());
+        }
     }
 
     // String format: T/D/E  + 1/0 + description + dates
