@@ -8,6 +8,12 @@ repositories {
     mavenCentral()
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
@@ -28,7 +34,7 @@ test {
 }
 
 application {
-    mainClass.set("seedu.duke.Duke")
+    mainClass = 'leo.Leo'
 }
 
 shadowJar {
@@ -36,6 +42,6 @@ shadowJar {
     archiveClassifier = null
 }
 
-run{
+tasks.named('run'){
     standardInput = System.in
 }
