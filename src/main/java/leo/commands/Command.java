@@ -6,9 +6,20 @@ import leo.storage.Storage;
 import leo.tasks.TaskList;
 
 public abstract class Command {
+    /**
+     * Executes the command.
+     *
+     * @param tasks the current task list (model).
+     * @param ui the UI helper for output.
+     * @param storage the storage facility for persistence.
+     * @throws LeoException if execution fails for a user-facing reason.
+     */
     public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws LeoException;
-
-    // Set as false at the start for all children
+    
+    /**
+     * Determines when the program terminates
+     * @return false if program is still running. true if otherwise
+     */
     public boolean isExit() {
         return false;
     }
