@@ -27,6 +27,9 @@ public class Leo {
         }
     }
 
+    /**
+     * Runs the entire program, from welcome to reading user input to exiting
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;

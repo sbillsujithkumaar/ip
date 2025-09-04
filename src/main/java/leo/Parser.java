@@ -18,6 +18,13 @@ import java.time.format.DateTimeParseException;
 public class Parser {
     private static final DateTimeFormatter DEADLINE_IN = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    /**
+     * Parses a full user input line into a concrete {@link leo.command.Command}.
+     *
+     * @param fullCommand string input line from the user (e.g., "todo read book").
+     * @return a {@code Command}, which will eventually run execute method.
+     * @throws LeoException if the command is empty or unknown (invalid).
+     */
     public static Command parse(String fullCommand) throws LeoException {
 
         String input = fullCommand.trim();

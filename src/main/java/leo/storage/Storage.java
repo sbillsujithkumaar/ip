@@ -23,7 +23,12 @@ public class Storage {
         this.filePath = Paths.get(filePath);
     }
 
-    // Load from files. Catch all IOExceptions here first
+    /**
+     * Loads tasks from disk. Also, creates files/directories if absent
+     *
+     * @return list of tasks found on disk. Return empty if none is found.
+     * @throws LeoException if an I/O error occurs during loading the tasks.
+     */
     public List<Task> load() throws LeoException {
 
         // Handle all IOExceptions here
@@ -111,6 +116,12 @@ public class Storage {
         return t;
     }
 
+    /**
+     * Saves all tasks to disk by overwriting the target file.
+     *
+     * @param tasksList the updates list of tasks to save
+     * @throws IOException if saving fails
+     */
     public void save(List<Task> tasksList) throws IOException {
         Path parent = filePath.getParent();
         if (parent != null && !Files.exists(parent)) {
