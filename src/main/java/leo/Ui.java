@@ -3,6 +3,7 @@ package leo;
 import leo.tasks.Task;
 import leo.tasks.TaskList;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Ui {
@@ -40,16 +41,16 @@ public class Ui {
 
     public void showWelcome() {
         String logo = """
-                 ▄█          ▄████████  ▄██████▄ 
-                ███         ███    ███ ███    ███
-                ███         ███    █▀  ███    ███
-                ███        ▄███▄▄▄     ███    ███
-                ███       ▀▀███▀▀▀     ███    ███
-                ███         ███    █▄  ███    ███
-                ███▌    ▄   ███    ███ ███    ███
-                █████▄▄██   ██████████  ▀██████▀ 
-                ▀                                
-                """;
+             ▄█          ▄████████  ▄██████▄ 
+            ███         ███    ███ ███    ███
+            ███         ███    █▀  ███    ███
+            ███        ▄███▄▄▄     ███    ███
+            ███       ▀▀███▀▀▀     ███    ███
+            ███         ███    █▄  ███    ███
+            ███▌    ▄   ███    ███ ███    ███
+            █████▄▄██   ██████████  ▀██████▀ 
+            ▀                                
+            """;
         System.out.println(logo);
 
         showLine();
@@ -126,6 +127,19 @@ public class Ui {
         System.out.println(" Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
             System.out.println(" " + (i + 1) + ". " + tasks.get(i));
+        }
+        showLine();
+    }
+
+    public void showFindResults(List<Task> matches) {
+        showLine();
+        if (matches.isEmpty()) {
+            System.out.println(" Bro is hallucinating; no such thing here");
+        } else {
+            System.out.println(" Here are the matching tasks in your list:");
+            for (int i = 0; i < matches.size(); i++) {
+                System.out.println(" " + (i + 1) + ". " + matches.get(i));
+            }
         }
         showLine();
     }

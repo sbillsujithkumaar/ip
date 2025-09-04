@@ -4,6 +4,7 @@ import leo.commands.AddCommand;
 import leo.commands.Command;
 import leo.commands.DeleteCommand;
 import leo.commands.ExitCommand;
+import leo.commands.FindCommand;
 import leo.commands.ListCommand;
 import leo.commands.MarkCommand;
 import leo.commands.UnmarkCommand;
@@ -63,6 +64,10 @@ public class Parser {
         } else if (input.startsWith("delete ")) {
             int idx = parseIndex(input, "delete"); // 0-based
             return new DeleteCommand(idx);
+
+        } else if (input.startsWith("find ")) {
+            String keyword = input.substring(5);
+            return new FindCommand(keyword);
 
         } else {
             throw new LeoException("Unknown command: " + input);
