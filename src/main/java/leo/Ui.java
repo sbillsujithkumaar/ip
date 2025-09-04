@@ -1,3 +1,8 @@
+package leo;
+
+import leo.tasks.Task;
+import leo.tasks.TaskList;
+
 import java.util.Scanner;
 
 public class Ui {
