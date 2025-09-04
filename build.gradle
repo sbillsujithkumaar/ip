@@ -46,6 +46,6 @@ shadowJar {
     archiveClassifier = null
 }
 
-tasks.named('run'){
+tasks.named('run') {
     standardInput = System.in
 }

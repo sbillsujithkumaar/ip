@@ -9,6 +9,7 @@ public class Ui {
 
     /**
      * To display any errors
+     *
      * @param msg the error message
      */
     public void showError(String msg) {
@@ -22,6 +23,7 @@ public class Ui {
 
     /**
      * reads user input using a single global scanner
+     *
      * @return user input as a string
      */
     public String readCommand() {
@@ -33,21 +35,21 @@ public class Ui {
     }
 
     public void showLoadingError() {
-       showError("I/O Error occured when loading from memory");
+        showError("I/O Error occured when loading from memory");
     }
 
     public void showWelcome() {
         String logo = """
-         ▄█          ▄████████  ▄██████▄ 
-        ███         ███    ███ ███    ███
-        ███         ███    █▀  ███    ███
-        ███        ▄███▄▄▄     ███    ███
-        ███       ▀▀███▀▀▀     ███    ███
-        ███         ███    █▄  ███    ███
-        ███▌    ▄   ███    ███ ███    ███
-        █████▄▄██   ██████████  ▀██████▀ 
-        ▀                                
-        """;
+                 ▄█          ▄████████  ▄██████▄ 
+                ███         ███    ███ ███    ███
+                ███         ███    █▀  ███    ███
+                ███        ▄███▄▄▄     ███    ███
+                ███       ▀▀███▀▀▀     ███    ███
+                ███         ███    █▄  ███    ███
+                ███▌    ▄   ███    ███ ███    ███
+                █████▄▄██   ██████████  ▀██████▀ 
+                ▀                                
+                """;
         System.out.println(logo);
 
         showLine();
@@ -64,7 +66,8 @@ public class Ui {
 
     /**
      * Only displays the message if a task is added
-     * @param task new task that was added.
+     *
+     * @param task    new task that was added.
      * @param newSize new size of updated list of tasks.
      */
     public void showAdded(Task task, int newSize) {
@@ -77,7 +80,8 @@ public class Ui {
 
     /**
      * Only displays the message if a task is removed
-     * @param task new task that was removed.
+     *
+     * @param task    new task that was removed.
      * @param newSize new size of updated list of tasks.
      */
     public void showRemoved(Task task, int newSize) {
@@ -90,6 +94,7 @@ public class Ui {
 
     /**
      * Only displays the message if a task is marked as done
+     *
      * @param task task that was marked as done
      */
     public void showMarked(Task task) {
@@ -101,6 +106,7 @@ public class Ui {
 
     /**
      * Only displays the message if a task is marked as undone
+     *
      * @param task task that was marked as undone
      */
     public void showUnmarked(Task task) {
@@ -112,6 +118,7 @@ public class Ui {
 
     /**
      * Displays the current list of tasks, formatted with all details
+     *
      * @param tasks current list of tasks
      */
     public void showList(TaskList tasks) {

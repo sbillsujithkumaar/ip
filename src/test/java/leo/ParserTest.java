@@ -3,7 +3,11 @@ package leo;
 import leo.commands.Command;
 import leo.commands.ListCommand;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ParserTest {
 
@@ -19,7 +23,7 @@ public class ParserTest {
     void deadline_with_wrong_date_format_throws() {
         // wrong format: uses slashes instead of yyyy-MM-dd
         LeoException ex = assertThrows(LeoException.class,
-                () -> Parser.parse("deadline return /by 2025/12/31"));
+                                       () -> Parser.parse("deadline return /by 2025/12/31"));
         assertTrue(ex.getMessage().toLowerCase().contains("invalid"));
     }
 

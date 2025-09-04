@@ -4,13 +4,6 @@ import leo.commands.Command;
 import leo.storage.Storage;
 import leo.tasks.TaskList;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Leo {
     private Storage storage;
     private TaskList tasks;

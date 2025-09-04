@@ -1,19 +1,21 @@
 package leo.storage;
 
-import leo.tasks.Task;
-import leo.tasks.ToDo;
+import leo.LeoException;
 import leo.tasks.Deadline;
 import leo.tasks.Event;
-import leo.LeoException;
+import leo.tasks.Task;
+import leo.tasks.ToDo;
 
-import java.io.IOException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Storage {
     private final Path filePath;
@@ -120,6 +122,7 @@ public class Storage {
      * Saves all tasks to disk by overwriting the target file.
      *
      * @param tasksList the updates list of tasks to save
+     *
      * @throws IOException if saving fails
      */
     public void save(List<Task> tasksList) throws IOException {

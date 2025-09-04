@@ -1,12 +1,12 @@
 package leo;
 
 import leo.commands.AddCommand;
+import leo.commands.Command;
 import leo.commands.DeleteCommand;
 import leo.commands.ExitCommand;
 import leo.commands.ListCommand;
 import leo.commands.MarkCommand;
 import leo.commands.UnmarkCommand;
-import leo.commands.Command;
 import leo.tasks.Deadline;
 import leo.tasks.Event;
 import leo.tasks.ToDo;
@@ -22,6 +22,7 @@ public class Parser {
      * Parses a full user input line into a concrete {@link leo.command.Command}.
      *
      * @param fullCommand string input line from the user (e.g., "todo read book").
+     *
      * @return a {@code Command}, which will eventually run execute method.
      * @throws LeoException if the command is empty or unknown (invalid).
      */

@@ -16,9 +16,11 @@ public class Task {
     public void markAsDone() {
         this.isDone = true;
     }
+
     public void markAsNotDone() {
         this.isDone = false;
     }
+
     public String getDescription() {
         return this.description;
     }

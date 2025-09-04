@@ -1,14 +1,15 @@
 package leo.commands;
 
+import leo.LeoException;
 import leo.Ui;
 import leo.storage.Storage;
 import leo.tasks.TaskList;
-import leo.LeoException;
 
 import java.io.IOException;
 
 public class UnmarkCommand extends Command {
     private final int index;
+
     public UnmarkCommand(int index) {
         this.index = index;
     }
