@@ -4,6 +4,7 @@ import leo.LeoException;
 import leo.tasks.Deadline;
 import leo.tasks.Event;
 import leo.tasks.Task;
+import leo.tasks.TaskType;
 import leo.tasks.ToDo;
 
 import java.io.FileWriter;
@@ -80,8 +81,13 @@ public class Storage {
             parts[i] = parts[i].trim();
         }
 
-        // T/D/E
-        String type = parts[0];
+        // T/D/E (parse via enum)
+        TaskType type;
+        try {
+            type = TaskType.fromCode(parts[0]);
+        } catch (IllegalArgumentException e) {
+            return null; // skip unknown lines safely
+        }
         // 1 - Done/ 0 - not Done
         boolean isDone = "1".equals(parts[1]);
         // description
@@ -89,17 +95,17 @@ public class Storage {
 
         Task t;
         switch (type) {
-            case "T":
+            case TODO:
                 t = new ToDo(desc);
                 break;
-            case "D":
+            case DEADLINE:
                 if (parts.length < 4) {
                     return null;
                 }
                 LocalDate byDate = LocalDate.parse(parts[3], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 t = new Deadline(desc, byDate);
                 break;
-            case "E":
+            case EVENT:
                 if (parts.length < 5) {
                     return null;
                 }
@@ -145,17 +151,18 @@ public class Storage {
 
             if (t instanceof ToDo) {
                 // T | status | description
-                line = "T | " + status + " | " + t.getDescription();
+                line = TaskType.TODO.code() + " | " + status + " | " + t.getDescription();
 
             } else if (t instanceof Deadline) {
                 // D | status | description | by
                 String by = ((Deadline) t).getBy().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                line = "D | " + status + " | " + t.getDescription() + " | " + by;
+                line = TaskType.DEADLINE.code() + " | " + status + " | " + t.getDescription() + " | " + by;
+
             } else if (t instanceof Event) {
                 // E | status | description | from | to
                 String from = ((Event) t).getFrom();
                 String to = ((Event) t).getTo();
-                line = "E | " + status + " | " + t.getDescription() + " | " + from + " | " + to;
+                line = TaskType.EVENT.code() + " | " + status + " | " + t.getDescription() + " | " + from + " | " + to;
             } else {
                 // Unknown type
                 continue;

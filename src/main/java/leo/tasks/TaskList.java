@@ -28,7 +28,7 @@ public class TaskList {
     /**
      * Returns the task at {@code index}.
      *
-     * @param index index of the task to retrieve (1-based).
+     * @param index index of the task to retrieve.
      */
     public Task get(int index) {
         return tasks.get(index);
@@ -46,7 +46,7 @@ public class TaskList {
     /**
      * Removes and returns the task at {@code index}.
      *
-     * @param index index of the task to remove (1-based).
+     * @param index index of the task to remove.
      */
     public Task remove(int index) {
         return tasks.remove(index);
