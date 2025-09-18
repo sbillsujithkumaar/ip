@@ -1,21 +1,38 @@
 @ECHO OFF
+SETLOCAL ENABLEEXTENSIONS
 
-REM create bin directory if it doesn't exist
-if not exist ..\bin mkdir ..\bin
+REM ---- Clean build dir
+IF EXIST ..\bin RMDIR /S /Q ..\bin
+MKDIR ..\bin
 
-REM delete output from previous run
-if exist ACTUAL.TXT del ACTUAL.TXT
+REM ---- Clean previous output
+IF EXIST ACTUAL.TXT DEL ACTUAL.TXT
 
-REM compile the code into the bin folder
-javac  -cp ..\src\main\java -Xlint:none -d ..\bin ..\src\main\java\*.java
-IF ERRORLEVEL 1 (
-    echo ********** BUILD FAILURE **********
-    exit /b 1
+REM ---- Recursively compile ALL sources into ..\bin
+ECHO Compiling sources...
+FOR /R "..\src\main\java" %%f IN (*.java) DO (
+  javac -cp ..\src\main\java -Xlint:none -d ..\bin "%%f"
+  IF ERRORLEVEL 1 (
+    ECHO ********** BUILD FAILURE **********
+    EXIT /B 1
+  )
 )
-REM no error here, errorlevel == 0
 
-REM run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
-java -classpath ..\bin Leo < input.txt > ACTUAL.TXT
+REM ---- Run program (must be executed from the text-ui-test folder)
+ECHO Running Leo with redirected input...
+java -classpath ..\bin leo.Leo < input.txt > ACTUAL.TXT
+IF ERRORLEVEL 1 (
+  ECHO ********** RUNTIME FAILURE **********
+  EXIT /B 1
+)
 
-REM compare the output to the expected output
-FC ACTUAL.TXT EXPECTED.TXT
+REM ---- Verify output against expected (silent diff)
+FC ACTUAL.TXT EXPECTED.TXT >NUL
+IF ERRORLEVEL 1 (
+  ECHO ********** TEST FAILED **********
+  EXIT /B 1
+) ELSE (
+  ECHO ********** TEST PASSED **********
+)
+
+ENDLOCAL
