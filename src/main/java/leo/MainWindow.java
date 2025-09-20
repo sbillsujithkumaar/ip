@@ -1,5 +1,7 @@
 package leo;
 
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -7,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 /**
  * Controller for the main GUI.
@@ -32,14 +35,19 @@ public class MainWindow extends AnchorPane {
     }
 
     /**
-     * Injects the Duke instance
+     * Injects the Leo instance
      */
     public void setLeo(Leo d) {
         leo = d;
+        String welcome = leo.getWelcomeMessage();
+        dialogContainer.getChildren().add(
+            DialogBox.getLeoDialog(welcome, dukeImage)
+        );
     }
 
+
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Duke's reply and then appends them to
+     * Creates two dialog boxes, one echoing user input and the other containing Leo's reply and then appends them to
      * the dialog container. Clears the user input after processing.
      */
     @FXML
@@ -50,6 +58,13 @@ public class MainWindow extends AnchorPane {
             DialogBox.getUserDialog(input, userImage),
             DialogBox.getLeoDialog(response, dukeImage)
         );
+
         userInput.clear();
+
+        if (input.trim().equalsIgnoreCase("bye")) {
+            PauseTransition delay = new PauseTransition(Duration.millis(300));
+            delay.setOnFinished(e -> Platform.exit());
+            delay.play();
+        }
     }
 }
