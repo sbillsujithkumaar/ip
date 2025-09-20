@@ -16,6 +16,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Parses user input strings into concrete {@code Command} instances.
+ */
 public class Parser {
     private static final DateTimeFormatter DEADLINE_IN = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 

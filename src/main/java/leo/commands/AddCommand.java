@@ -1,12 +1,14 @@
 package leo.commands;
 
-
 import leo.LeoException;
 import leo.Ui;
 import leo.storage.Storage;
 import leo.tasks.Task;
 import leo.tasks.TaskList;
 
+/**
+ * Command that adds a task and saves the list to storage.
+ */
 public class AddCommand extends Command {
     private final Task task;
 

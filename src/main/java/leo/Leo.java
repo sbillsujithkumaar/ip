@@ -4,11 +4,19 @@ import leo.commands.Command;
 import leo.storage.Storage;
 import leo.tasks.TaskList;
 
+/**
+ * Entry point and main application loop for Leo.
+ */
 public class Leo {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Creates a Leo instance backed by the given save file path.
+     *
+     * @param filePath path to the storage file
+     */
     public Leo(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -21,7 +29,7 @@ public class Leo {
     }
 
     /**
-     * Runs the entire program, from welcome to reading user input to exiting
+     * Runs the entire program, from welcome to reading user input to exiting.
      */
     public void run() {
         ui.showWelcome();
@@ -43,6 +51,13 @@ public class Leo {
 
     public static void main(String[] args) {
         new Leo("data/tasks.txt").run();
+    }
+
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "Duke heard: " + input;
     }
 
 }

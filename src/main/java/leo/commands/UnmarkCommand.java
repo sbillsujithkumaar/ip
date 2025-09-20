@@ -7,6 +7,9 @@ import leo.tasks.TaskList;
 
 import java.io.IOException;
 
+/**
+ * Command that marks a task as not done and saves the list.
+ */
 public class UnmarkCommand extends Command {
     private final int index;
 

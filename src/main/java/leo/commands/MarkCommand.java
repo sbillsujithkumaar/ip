@@ -7,6 +7,9 @@ import leo.tasks.TaskList;
 
 import java.io.IOException;
 
+/**
+ * Command that marks a task as done and saves the list.
+ */
 public class MarkCommand extends Command {
     private final int index;
 

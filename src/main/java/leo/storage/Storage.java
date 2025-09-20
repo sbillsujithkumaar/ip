@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Loads and saves tasks to a plain-text storage file.
+ */
 public class Storage {
     private final Path filePath;
 
