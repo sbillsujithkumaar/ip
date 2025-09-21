@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * A GUI for Duke using FXML.
+ * A GUI for Leo using FXML.
  */
 public class Main extends Application {
 
@@ -25,7 +25,10 @@ public class Main extends Application {
             fxmlLoader.<MainWindow>getController().setLeo(leo);  // inject the Duke instance
             stage.show();
         } catch (IOException e) {
+            // FXML loading failed - show error dialog and exit gracefully
+            System.err.println("Failed to load GUI: " + e.getMessage());
             e.printStackTrace();
+            System.exit(1);
         }
     }
 }

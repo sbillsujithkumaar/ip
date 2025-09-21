@@ -139,7 +139,9 @@ public class Ui {
         showLine();
         System.out.println(" Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
-            System.out.println(" " + (i + 1) + ". " + tasks.get(i));
+            int displayNumber = i + 1; // Convert 0-based index to 1-based display
+            Task currentTask = tasks.get(i);
+            System.out.println(" " + displayNumber + ". " + currentTask);
         }
         showLine();
     }
@@ -151,13 +153,18 @@ public class Ui {
      */
     public void showFindResults(List<Task> matches) {
         showLine();
+        
         if (matches.isEmpty()) {
-            System.out.println(" Bro is hallucinating; no such thing here");
-        } else {
-            System.out.println(" Here are the matching tasks in your list:");
-            for (int i = 0; i < matches.size(); i++) {
-                System.out.println(" " + (i + 1) + ". " + matches.get(i));
-            }
+            System.out.println(" No matching tasks found.");
+            showLine();
+            return;
+        }
+        
+        System.out.println(" Here are the matching tasks in your list:");
+        for (int i = 0; i < matches.size(); i++) {
+            int displayNumber = i + 1; // Convert 0-based index to 1-based display
+            Task matchingTask = matches.get(i);
+            System.out.println(" " + displayNumber + ". " + matchingTask);
         }
         showLine();
     }

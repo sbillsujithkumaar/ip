@@ -1,17 +1,16 @@
 package leo.tasks;
 
+import leo.LeoException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskList {
-    // Start with empty ArrayList
     private final List<Task> tasks = new ArrayList<>();
 
-    // Empty task list initialisation
     public TaskList() {
     }
 
-    // Loaded task list initialisation (Populate)
     public TaskList(List<Task> initial) {
         if (initial != null) {
             tasks.addAll(initial);
@@ -60,13 +59,37 @@ public class TaskList {
     }
 
     public List<Task> find(String keyword) {
-        String formattedKeyword = keyword.toLowerCase();
-        List<Task> result = new ArrayList<>();
-        for (Task t : tasks) {
-            if (t.getDescription().toLowerCase().contains(formattedKeyword)) {
-                result.add(t);
+        String searchKeyword = keyword.toLowerCase();
+        List<Task> matchingTasks = new ArrayList<>();
+        
+        for (Task task : tasks) {
+            if (taskMatchesKeyword(task, searchKeyword)) {
+                matchingTasks.add(task);
             }
         }
-        return result;
+        
+        return matchingTasks;
+    }
+    
+    /**
+     * Checks if a task's description contains the search keyword.
+     */
+    private boolean taskMatchesKeyword(Task task, String searchKeyword) {
+        String taskDescription = task.getDescription().toLowerCase();
+        return taskDescription.contains(searchKeyword);
+    }
+
+    /**
+     * Validates that the given index is within the valid range for this task list.
+     * Throws LeoException if the index is invalid.
+     *
+     * @param index the index to validate
+     * @throws LeoException if the index is out of range
+     */
+    public void validateIndex(int index) throws LeoException {
+        if (index < 0 || index >= tasks.size()) {
+            throw new LeoException("Index out of range.");
+        }
     }
 }
+
