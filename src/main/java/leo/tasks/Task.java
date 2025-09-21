@@ -5,6 +5,7 @@ public class Task {
     protected boolean isDone;
 
     public Task(String description) {
+        assert description != null && !description.trim().isEmpty() : "Task description must be non-empty";
         this.description = description;
         this.isDone = false;
     }
@@ -14,10 +15,12 @@ public class Task {
     }
 
     public void markAsDone() {
+        assert !isDone : "Task being marked should not already be marked";
         this.isDone = true;
     }
 
     public void markAsNotDone() {
+        assert isDone : "Task being unmarked should not already be unmarked";
         this.isDone = false;
     }
 

@@ -30,6 +30,7 @@ public class TaskList {
      * @param index index of the task to retrieve.
      */
     public Task get(int index) {
+        assert index >= 0 && index < tasks.size() : "index out of bounds";
         return tasks.get(index);
     }
 
@@ -48,6 +49,7 @@ public class TaskList {
      * @param index index of the task to remove.
      */
     public Task remove(int index) {
+        assert index >= 0 && index < tasks.size() : "index out of bounds";
         return tasks.remove(index);
     }
 
