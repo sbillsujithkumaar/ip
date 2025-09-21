@@ -11,6 +11,9 @@ import java.util.Scanner;
  */
 public class Ui {
 
+    private static final int HELP_COL_WIDTH = 32;
+    private static final String HELP_LINE_FORMAT = "  %-" + HELP_COL_WIDTH + "s %s%n";
+
     // Create a scanner object
     private final Scanner scanner = new Scanner(System.in);
 
@@ -45,7 +48,7 @@ public class Ui {
      * Shows an error shown when storage fails to load.
      */
     public void showLoadingError() {
-        showError("I/O Error occured when loading from memory");
+        showError("I/O Error occurred when loading from memory");
     }
 
     /**
@@ -53,14 +56,14 @@ public class Ui {
      */
     public void showWelcome() {
         String logo = " ▄█          ▄████████  ▄██████▄\n"
-                      + "███         ███    ███ ███    ███\n"
-                      + "███         ███    █▀  ███    ███\n"
-                      + "███        ▄███▄▄▄     ███    ███\n"
-                      + "███       ▀▀███▀▀▀     ███    ███\n"
-                      + "███         ███    █▄  ███    ███\n"
-                      + "███▌    ▄   ███    ███ ███    ███\n"
-                      + "█████▄▄██   ██████████  ▀██████▀\n"
-                      + "▀\n";
+            + "███         ███    ███ ███    ███\n"
+            + "███         ███    █▀  ███    ███\n"
+            + "███        ▄███▄▄▄     ███    ███\n"
+            + "███       ▀▀███▀▀▀     ███    ███\n"
+            + "███         ███    █▄  ███    ███\n"
+            + "███▌    ▄   ███    ███ ███    ███\n"
+            + "█████▄▄██   ██████████  ▀██████▀\n"
+            + "▀\n";
         System.out.println(logo);
 
         showLine();
@@ -153,13 +156,13 @@ public class Ui {
      */
     public void showFindResults(List<Task> matches) {
         showLine();
-        
+
         if (matches.isEmpty()) {
             System.out.println(" No matching tasks found.");
             showLine();
             return;
         }
-        
+
         System.out.println(" Here are the matching tasks in your list:");
         for (int i = 0; i < matches.size(); i++) {
             int displayNumber = i + 1; // Convert 0-based index to 1-based display
@@ -167,5 +170,39 @@ public class Ui {
             System.out.println(" " + displayNumber + ". " + matchingTask);
         }
         showLine();
+    }
+
+    public void showHelp() {
+        showLine();
+        System.out.println(" Available Commands\n");
+
+        printSection("TASK MANAGEMENT", new String[][]{
+            {"todo <desc>", "Add a new todo task"},
+            {"deadline <desc> /by yyyy-MM-dd", "Add a task with a deadline"},
+            {"event <desc> /from <start> /to <end>", "Add an event with a time range"}
+        });
+
+        printSection("TASK OPERATIONS", new String[][]{
+            {"list", "Show all tasks"},
+            {"find <keyword>", "Search tasks by keyword"},
+            {"mark <index>", "Mark task as done"},
+            {"unmark <index>", "Mark task as not done"},
+            {"delete <index>", "Delete task at index"}
+        });
+
+        printSection("MISC", new String[][]{
+            {"help (or h)", "Show this help message"},
+            {"bye", "Exit the program"}
+        });
+
+        showLine();
+    }
+
+    private void printSection(String title, String[][] entries) {
+        System.out.println(" " + title);
+        for (String[] entry : entries) {
+            System.out.printf(HELP_LINE_FORMAT, entry[0], entry[1]);
+        }
+        System.out.println();
     }
 }

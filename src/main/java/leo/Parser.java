@@ -5,6 +5,7 @@ import leo.commands.Command;
 import leo.commands.DeleteCommand;
 import leo.commands.ExitCommand;
 import leo.commands.FindCommand;
+import leo.commands.HelpCommand;
 import leo.commands.ListCommand;
 import leo.commands.MarkCommand;
 import leo.commands.UnmarkCommand;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+
 /**
  * Parses user input strings into concrete {@code Command} instances.
  */
@@ -26,12 +28,14 @@ public class Parser {
     private static final String MARK_COMMAND = "mark ";
     private static final String UNMARK_COMMAND = "unmark ";
     private static final String DELETE_COMMAND = "delete ";
-    
+    private static final String HELP_COMMAND = "help";
+    private static final String HELP_ALIAS = "h";
+
     // Command parameter separators
     private static final String DEADLINE_SEPARATOR = " /by ";
     private static final String EVENT_FROM_SEPARATOR = " /from ";
     private static final String EVENT_TO_SEPARATOR = " /to ";
-    
+
     // Substring indices for command parsing
     private static final int FIND_KEYWORD_START = 5;
     private static final int TODO_DESC_START = 5;
@@ -40,11 +44,11 @@ public class Parser {
     private static final int DEADLINE_SEPARATOR_LENGTH = 5;
     private static final int EVENT_FROM_SEPARATOR_LENGTH = 7;
     private static final int EVENT_TO_SEPARATOR_LENGTH = 5;
-    
-    
+
+
     // Date format
     private static final DateTimeFormatter DEADLINE_IN = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    
+
     // Index conversion
     private static final int USER_INDEX_TO_ZERO_BASED_OFFSET = 1;
 
@@ -58,28 +62,28 @@ public class Parser {
      */
     public static Command parse(String fullCommand) throws LeoException {
         String input = fullCommand.trim();
-        
+
         // Handle empty input early
         if (input.isEmpty()) {
             throw new LeoException("Nothing was commanded");
         }
-        
+
         // Try to recognize simple commands first
         Command simpleCommand = parseSimpleCommand(input);
         if (simpleCommand != null) {
             return simpleCommand;
         }
-        
+
         // Try to parse commands with parameters
         Command parameterCommand = parseParameterCommand(input);
         if (parameterCommand != null) {
             return parameterCommand;
         }
-        
+
         // Unknown command
         throw new LeoException("Unknown command: " + input);
     }
-    
+
     /**
      * Parses simple commands that don't require parameters.
      */
@@ -88,18 +92,19 @@ public class Parser {
             return new ExitCommand();
         } else if (input.equals(LIST_COMMAND)) {
             return new ListCommand();
+        } else if (input.equals(HELP_COMMAND) || input.equals(HELP_ALIAS)) {
+            return new HelpCommand();
         } else {
-            // No simple command matched - this is expected behavior
             return null;
         }
     }
-    
+
     /**
      * Parses commands that require parameters.
      */
     private static Command parseParameterCommand(String input) throws LeoException {
         String firstToken = getFirstToken(input);
-        
+
         switch (firstToken) {
             case "mark":
                 return parseIndexCommand(input, MARK_COMMAND, MarkCommand::new);
@@ -131,17 +136,17 @@ public class Parser {
         }
         return input.substring(0, spaceIndex).trim();
     }
-    
+
     /**
      * Parses commands that require an index parameter.
      */
-    private static Command parseIndexCommand(String input, String commandPrefix, 
-                                           IndexCommandFactory factory) throws LeoException {
+    private static Command parseIndexCommand(String input, String commandPrefix,
+                                             IndexCommandFactory factory) throws LeoException {
         String trimmedCommandPrefix = commandPrefix.trim();
         int taskIndex = parseIndex(input, trimmedCommandPrefix);
         return factory.create(taskIndex);
     }
-    
+
     /**
      * Functional interface for creating index-based commands.
      */
@@ -149,7 +154,7 @@ public class Parser {
     private interface IndexCommandFactory {
         Command create(int index) throws LeoException;
     }
-    
+
     /**
      * Parses the find command.
      */
@@ -157,7 +162,7 @@ public class Parser {
         String searchKeyword = input.substring(FIND_KEYWORD_START);
         return new FindCommand(searchKeyword);
     }
-    
+
     /**
      * Parses the todo command.
      */
@@ -166,7 +171,7 @@ public class Parser {
         ToDo newTodo = new ToDo(taskDescription);
         return new AddCommand(newTodo);
     }
-    
+
     /**
      * Parses the deadline command.
      */
@@ -174,7 +179,7 @@ public class Parser {
         Deadline newDeadline = parseDeadline(input);
         return new AddCommand(newDeadline);
     }
-    
+
     /**
      * Parses the event command.
      */
@@ -187,7 +192,7 @@ public class Parser {
         // Extract the index part after the command word
         int commandWordLength = commandWord.length();
         String indexPart = input.substring(commandWordLength).trim();
-        
+
         if (indexPart.isEmpty()) {
             throw new LeoException("No number was inputted");
         }
@@ -195,7 +200,7 @@ public class Parser {
         try {
             // Parse the user-provided index (1-based)
             int userProvidedIndex = Integer.parseInt(indexPart);
-            
+
             // Convert from 1-based user input to 0-based array index
             int arrayIndex = userProvidedIndex - USER_INDEX_TO_ZERO_BASED_OFFSET;
             return arrayIndex;
@@ -248,7 +253,7 @@ public class Parser {
         boolean isFromSeparatorMissing = fromIdx == -1;
         boolean isToSeparatorMissing = toIdx == -1;
         boolean isToBeforeFrom = toIdx <= fromIdx;
-        
+
         if (isFromSeparatorMissing || isToSeparatorMissing || isToBeforeFrom) {
             throw new LeoException("Wrong format. Input:  event <description> /from <start> /to <end>");
         }
@@ -261,7 +266,7 @@ public class Parser {
         boolean isDescriptionEmpty = desc.isEmpty();
         boolean isFromEmpty = from.isEmpty();
         boolean isToEmpty = to.isEmpty();
-        
+
         if (isDescriptionEmpty || isFromEmpty || isToEmpty) {
             throw new LeoException("Description/Dates are empty. Input:  event <description> /from <start> /to <end>");
         }
