@@ -21,10 +21,7 @@ public class AddCommand extends Command {
     public void execute(TaskList tasks, Ui ui, Storage storage) throws LeoException {
         tasks.add(task);
         ui.showAdded(task, tasks.size());
-        try {
-            storage.save(tasks.list());
-        } catch (Exception e) {
-            ui.showError("Could not save: " + e.getMessage());
-        }
+        saveTasksToStorage(tasks, ui, storage);
     }
+
 }

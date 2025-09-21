@@ -2,15 +2,20 @@ package leo;
 
 import leo.commands.Command;
 import leo.storage.Storage;
+import leo.tasks.Task;
 import leo.tasks.TaskList;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.List;
 
 /**
  * Entry point and main application loop for Leo.
  */
 public class Leo {
+    // Default file path constant
+    private static final String DEFAULT_TASK_FILE_PATH = "data/tasks.txt";
+    
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
@@ -21,13 +26,17 @@ public class Leo {
      * @param filePath path to the storage file
      */
     public Leo(String filePath) {
-        ui = new Ui();
-        storage = new Storage(filePath);
+        // Initialize UI components
+        this.ui = new Ui();
+        this.storage = new Storage(filePath);
+        
+        // Load existing tasks or start with empty list
         try {
-            tasks = new TaskList(storage.load());
+            List<Task> loadedTasks = storage.load();
+            this.tasks = new TaskList(loadedTasks);
         } catch (LeoException e) {
             ui.showLoadingError();
-            tasks = new TaskList();
+            this.tasks = new TaskList();
         }
     }
 
@@ -36,14 +45,17 @@ public class Leo {
      */
     public void run() {
         ui.showWelcome();
-        boolean isExit = false;
-        while (!isExit) {
+        
+        boolean shouldExit = false;
+        while (!shouldExit) {
             try {
-                String fullCommand = ui.readCommand();
+                String userCommand = ui.readCommand();
                 ui.showLine();
-                Command c = Parser.parse(fullCommand);
-                c.execute(tasks, ui, storage);
-                isExit = c.isExit();
+                
+                Command parsedCommand = Parser.parse(userCommand);
+                parsedCommand.execute(tasks, ui, storage);
+                
+                shouldExit = parsedCommand.isExit();
             } catch (LeoException e) {
                 ui.showError(e.getMessage());
             } finally {
@@ -53,7 +65,7 @@ public class Leo {
     }
 
     public static void main(String[] args) {
-        new Leo("data/tasks.txt").run();
+        new Leo(DEFAULT_TASK_FILE_PATH).run();
     }
 
     private String captureOutput(Runnable r) {

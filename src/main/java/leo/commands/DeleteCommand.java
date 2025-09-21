@@ -19,17 +19,15 @@ public class DeleteCommand extends Command {
     // Use Storage to save changes
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws LeoException {
-        try {
-            Task removed = tasks.remove(index);
-
-            ui.showRemoved(removed, tasks.size());
-            try {
-                storage.save(tasks.list());
-            } catch (Exception e) {
-                ui.showError("Could not save: " + e.getMessage());
-            }
-        } catch (IndexOutOfBoundsException e) {
-            throw new LeoException("Index out of range.");
-        }
+        // Guard clause - validate index early
+        tasks.validateIndex(index);
+        
+        // Happy path - remove task
+        Task removed = tasks.remove(index);
+        ui.showRemoved(removed, tasks.size());
+        
+        // Save changes
+        saveTasksToStorage(tasks, ui, storage);
     }
+
 }

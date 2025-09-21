@@ -3,9 +3,8 @@ package leo.commands;
 import leo.LeoException;
 import leo.Ui;
 import leo.storage.Storage;
+import leo.tasks.Task;
 import leo.tasks.TaskList;
-
-import java.io.IOException;
 
 /**
  * Command that marks a task as not done and saves the list.
@@ -19,16 +18,16 @@ public class UnmarkCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws LeoException {
-        try {
-            tasks.get(index).markAsNotDone();
-            ui.showUnmarked(tasks.get(index));
-            try {
-                storage.save(tasks.list());
-            } catch (IOException e) {
-                ui.showError("Could not save: " + e.getMessage());
-            }
-        } catch (IndexOutOfBoundsException e) {
-            throw new LeoException("Check your range!");
-        }
+        // Guard clause - validate index early
+        tasks.validateIndex(index);
+        
+        // Happy path - mark task as not done
+        Task task = tasks.get(index);
+        task.markAsNotDone();
+        ui.showUnmarked(task);
+        
+        // Save changes
+        saveTasksToStorage(tasks, ui, storage);
     }
+
 }

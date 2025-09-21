@@ -15,6 +15,14 @@ import javafx.util.Duration;
  * Controller for the main GUI.
  */
 public class MainWindow extends AnchorPane {
+    // Constants for magic numbers
+    private static final String BYE_COMMAND = "bye";
+    private static final int EXIT_DELAY_MILLIS = 300;
+    
+    // Image paths
+    private static final String USER_IMAGE_PATH = "/images/DaUser.png";
+    private static final String DUKE_IMAGE_PATH = "/images/DaDuke.png";
+    
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -26,8 +34,8 @@ public class MainWindow extends AnchorPane {
 
     private Leo leo;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream(USER_IMAGE_PATH));
+    private Image dukeImage = new Image(this.getClass().getResourceAsStream(DUKE_IMAGE_PATH));
 
     @FXML
     public void initialize() {
@@ -35,36 +43,40 @@ public class MainWindow extends AnchorPane {
     }
 
     /**
-     * Injects the Leo instance
+     * Injects the Leo instance and shows the welcome message.
+     *
+     * @param leoInstance the Leo instance to inject
      */
-    public void setLeo(Leo d) {
-        leo = d;
-        String welcome = leo.getWelcomeMessage();
-        dialogContainer.getChildren().add(
-            DialogBox.getLeoDialog(welcome, dukeImage)
-        );
+    public void setLeo(Leo leoInstance) {
+        this.leo = leoInstance;
+        String welcomeMessage = leo.getWelcomeMessage();
+        DialogBox welcomeDialog = DialogBox.getLeoDialog(welcomeMessage, dukeImage);
+        dialogContainer.getChildren().add(welcomeDialog);
     }
 
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Leo's reply and then appends them to
-     * the dialog container. Clears the user input after processing.
+     * Handles user input by creating dialog boxes and processing the response.
      */
     @FXML
     private void handleUserInput() {
-        String input = userInput.getText();
-        String response = leo.getResponse(input);
-        dialogContainer.getChildren().addAll(
-            DialogBox.getUserDialog(input, userImage),
-            DialogBox.getLeoDialog(response, dukeImage)
-        );
-
+        String userInputText = userInput.getText();
         userInput.clear();
 
-        if (input.trim().equalsIgnoreCase("bye")) {
-            PauseTransition delay = new PauseTransition(Duration.millis(300));
-            delay.setOnFinished(e -> Platform.exit());
-            delay.play();
+        String leoResponse = leo.getResponse(userInputText);
+        
+        DialogBox userDialog = DialogBox.getUserDialog(userInputText, userImage);
+        DialogBox leoDialog = DialogBox.getLeoDialog(leoResponse, dukeImage);
+        
+        dialogContainer.getChildren().addAll(userDialog, leoDialog);
+
+        String trimmedInput = userInputText.trim();
+        boolean isExitCommand = trimmedInput.equalsIgnoreCase(BYE_COMMAND);
+        
+        if (isExitCommand) {
+            PauseTransition exitDelay = new PauseTransition(Duration.millis(EXIT_DELAY_MILLIS));
+            exitDelay.setOnFinished(e -> Platform.exit());
+            exitDelay.play();
         }
     }
 }
