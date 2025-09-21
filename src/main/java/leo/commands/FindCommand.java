@@ -8,6 +8,9 @@ import leo.tasks.TaskList;
 
 import java.util.List;
 
+/**
+ * Command that searches tasks by keyword and shows matches.
+ */
 public class FindCommand extends Command {
     private final String keyword;
 
@@ -24,4 +27,3 @@ public class FindCommand extends Command {
         ui.showFindResults(matches);
     }
 }
-

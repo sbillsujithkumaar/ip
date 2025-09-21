@@ -6,7 +6,13 @@ import leo.tasks.TaskList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Console UI helpers for displaying output and reading input.
+ */
 public class Ui {
+
+    // Create a scanner object
+    private final Scanner scanner = new Scanner(System.in);
 
     /**
      * To display any errors
@@ -19,9 +25,6 @@ public class Ui {
         System.out.println("__________________________________________________________________");
     }
 
-    // Create a scanner object
-    private final Scanner scanner = new Scanner(System.in);
-
     /**
      * reads user input using a single global scanner
      *
@@ -31,26 +34,33 @@ public class Ui {
         return scanner.nextLine();
     }
 
+    /**
+     * Prints a horizontal separator line.
+     */
     public void showLine() {
         System.out.println("__________________________________________________________________");
     }
 
+    /**
+     * Shows an error shown when storage fails to load.
+     */
     public void showLoadingError() {
         showError("I/O Error occured when loading from memory");
     }
 
+    /**
+     * Prints the welcome logo and greeting.
+     */
     public void showWelcome() {
-        String logo = """
-             ▄█          ▄████████  ▄██████▄ 
-            ███         ███    ███ ███    ███
-            ███         ███    █▀  ███    ███
-            ███        ▄███▄▄▄     ███    ███
-            ███       ▀▀███▀▀▀     ███    ███
-            ███         ███    █▄  ███    ███
-            ███▌    ▄   ███    ███ ███    ███
-            █████▄▄██   ██████████  ▀██████▀ 
-            ▀                                
-            """;
+        String logo = " ▄█          ▄████████  ▄██████▄\n"
+                      + "███         ███    ███ ███    ███\n"
+                      + "███         ███    █▀  ███    ███\n"
+                      + "███        ▄███▄▄▄     ███    ███\n"
+                      + "███       ▀▀███▀▀▀     ███    ███\n"
+                      + "███         ███    █▄  ███    ███\n"
+                      + "███▌    ▄   ███    ███ ███    ███\n"
+                      + "█████▄▄██   ██████████  ▀██████▀\n"
+                      + "▀\n";
         System.out.println(logo);
 
         showLine();
@@ -59,6 +69,9 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Prints the goodbye message.
+     */
     public void showBye() {
         showLine();
         System.out.println(" Bye. Hope to see you again soon!");
@@ -131,6 +144,11 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Displays tasks that match a find query.
+     *
+     * @param matches tasks matching the query
+     */
     public void showFindResults(List<Task> matches) {
         showLine();
         if (matches.isEmpty()) {

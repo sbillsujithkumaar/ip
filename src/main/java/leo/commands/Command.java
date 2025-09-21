@@ -5,6 +5,9 @@ import leo.Ui;
 import leo.storage.Storage;
 import leo.tasks.TaskList;
 
+/**
+ * Base type for all user commands executed by Leo.
+ */
 public abstract class Command {
     /**
      * Executes the command.
@@ -16,7 +19,6 @@ public abstract class Command {
      * @throws LeoException if execution fails for a user-facing reason.
      */
     public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws LeoException;
-
 
     /**
      * Determines when the program terminates

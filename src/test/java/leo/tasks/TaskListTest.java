@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 public class TaskListTest {
 
     @Test
-    void add_increases_size_and_preserves_item() {
+    void addIncreasesSize_preservesItem() {
         TaskList list = new TaskList();
         ToDo t = new ToDo("read book");
         list.add(t);
@@ -18,7 +18,7 @@ public class TaskListTest {
     }
 
     @Test
-    void remove_returns_item_and_decreases_size() {
+    void removeReturnsItem_decreasesSize() {
         TaskList list = new TaskList();
         ToDo t1 = new ToDo("a");
         ToDo t2 = new ToDo("b");

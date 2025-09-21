@@ -6,6 +6,9 @@ import leo.storage.Storage;
 import leo.tasks.Task;
 import leo.tasks.TaskList;
 
+/**
+ * Command that deletes a task and saves the remaining list to storage.
+ */
 public class DeleteCommand extends Command {
     private final int index;
 

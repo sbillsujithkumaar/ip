@@ -20,10 +20,9 @@ public class ParserTest {
     }
 
     @Test
-    void deadline_with_wrong_date_format_throws() {
+    void deadlineWrongDateFormat_throws() {
         // wrong format: uses slashes instead of yyyy-MM-dd
-        LeoException ex = assertThrows(LeoException.class,
-                                       () -> Parser.parse("deadline return /by 2025/12/31"));
+        LeoException ex = assertThrows(LeoException.class, () -> Parser.parse("deadline return /by 2025/12/31"));
         assertTrue(ex.getMessage().toLowerCase().contains("invalid"));
     }
 

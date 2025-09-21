@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Deadline extends Task {
-    protected LocalDate by;
     private static final DateTimeFormatter OUTPUT = DateTimeFormatter.ofPattern("MMM d yyyy");
+    protected LocalDate by;
 
 
     public Deadline(String description, LocalDate by) {
