@@ -1,5 +1,14 @@
 package leo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.LocalDate;
+
+import org.junit.jupiter.api.Test;
+
 import leo.commands.AddCommand;
 import leo.commands.Command;
 import leo.commands.ExitCommand;
@@ -11,15 +20,6 @@ import leo.tasks.Deadline;
 import leo.tasks.Event;
 import leo.tasks.ToDo;
 
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /**
  * Essential test suite for the Parser class.
  * Tests the parse method with the most important scenarios.
@@ -27,6 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ParserTest {
 
     // Test basic commands
+    /**
+     * Tests that parsing "bye" command returns an ExitCommand.
+     */
     @Test
     public void parse_byeCommand_returnsExitCommand() throws LeoException {
         Command result = Parser.parse("bye");
@@ -34,12 +37,18 @@ public class ParserTest {
         assertTrue(result.isExit());
     }
 
+    /**
+     * Tests that parsing "list" command returns a ListCommand.
+     */
     @Test
     public void parse_listCommand_returnsListCommand() throws LeoException {
         Command result = Parser.parse("list");
         assertInstanceOf(ListCommand.class, result);
     }
 
+    /**
+     * Tests that parsing "help" command returns a HelpCommand.
+     */
     @Test
     public void parse_helpCommand_returnsHelpCommand() throws LeoException {
         Command result = Parser.parse("help");
@@ -47,12 +56,18 @@ public class ParserTest {
     }
 
     // Test error handling
+    /**
+     * Tests that parsing empty input throws LeoException.
+     */
     @Test
     public void parse_emptyInput_throwsException() {
         LeoException exception = assertThrows(LeoException.class, () -> Parser.parse(""));
         assertEquals("Nothing was commanded", exception.getMessage());
     }
 
+    /**
+     * Tests that parsing unknown command throws LeoException.
+     */
     @Test
     public void parse_unknownCommand_throwsException() {
         LeoException exception = assertThrows(LeoException.class, () -> Parser.parse("unknown"));
@@ -60,6 +75,9 @@ public class ParserTest {
     }
 
     // Test todo command
+    /**
+     * Tests that parsing valid todo command returns AddCommand with ToDo task.
+     */
     @Test
     public void parse_todoCommand_returnsAddCommandWithToDo() throws LeoException {
         Command result = Parser.parse("todo read book");
@@ -69,6 +87,9 @@ public class ParserTest {
         assertEquals("read book", addCommand.getTask().getDescription());
     }
 
+    /**
+     * Tests that parsing todo command with empty description throws LeoException.
+     */
     @Test
     public void parse_todoCommandEmptyDescription_throwsException() {
         LeoException exception = assertThrows(LeoException.class, () -> Parser.parse("todo"));
@@ -76,6 +97,9 @@ public class ParserTest {
     }
 
     // Test deadline command
+    /**
+     * Tests that parsing valid deadline command returns AddCommand with Deadline task.
+     */
     @Test
     public void parse_deadlineCommand_returnsAddCommandWithDeadline() throws LeoException {
         Command result = Parser.parse("deadline submit assignment /by 2024-12-31");
@@ -88,13 +112,20 @@ public class ParserTest {
         assertEquals(LocalDate.of(2024, 12, 31), deadline.getBy());
     }
 
+    /**
+     * Tests that parsing deadline command without /by throws LeoException.
+     */
     @Test
     public void parse_deadlineCommandMissingBy_throwsException() {
         LeoException exception = assertThrows(LeoException.class, () -> 
             Parser.parse("deadline submit assignment"));
-        assertEquals("Wrong format. Input: deadline <description> /by <deadline>", exception.getMessage());
+        assertEquals("Wrong format. Input: deadline <description> /by <deadline>", 
+                exception.getMessage());
     }
 
+    /**
+     * Tests that parsing deadline command with invalid date format throws LeoException.
+     */
     @Test
     public void parse_deadlineCommandInvalidDateFormat_throwsException() {
         LeoException exception = assertThrows(LeoException.class, () -> 
@@ -103,6 +134,9 @@ public class ParserTest {
     }
 
     // Test event command
+    /**
+     * Tests that parsing valid event command returns AddCommand with Event task.
+     */
     @Test
     public void parse_eventCommand_returnsAddCommandWithEvent() throws LeoException {
         Command result = Parser.parse("event team meeting /from 2pm /to 3pm");
@@ -116,20 +150,30 @@ public class ParserTest {
         assertEquals("3pm", event.getTo());
     }
 
+    /**
+     * Tests that parsing event command without /from throws LeoException.
+     */
     @Test
     public void parse_eventCommandMissingFrom_throwsException() {
         LeoException exception = assertThrows(LeoException.class, () -> 
             Parser.parse("event team meeting /to 3pm"));
-        assertEquals("Wrong format. Input:  event <description> /from <start> /to <end>", exception.getMessage());
+        assertEquals("Wrong format. Input:  event <description> /from <start> /to <end>", 
+                exception.getMessage());
     }
 
     // Test find command
+    /**
+     * Tests that parsing valid find command returns FindCommand.
+     */
     @Test
     public void parse_findCommand_returnsFindCommand() throws LeoException {
         Command result = Parser.parse("find book");
         assertInstanceOf(FindCommand.class, result);
     }
 
+    /**
+     * Tests that parsing find command without keyword throws LeoException.
+     */
     @Test
     public void parse_findCommandEmptyKeyword_throwsException() {
         LeoException exception = assertThrows(LeoException.class, () -> Parser.parse("find"));
@@ -137,12 +181,18 @@ public class ParserTest {
     }
 
     // Test mark command
+    /**
+     * Tests that parsing valid mark command returns MarkCommand.
+     */
     @Test
     public void parse_markCommand_returnsMarkCommand() throws LeoException {
         Command result = Parser.parse("mark 1");
         assertInstanceOf(MarkCommand.class, result);
     }
 
+    /**
+     * Tests that parsing mark command with invalid index throws LeoException.
+     */
     @Test
     public void parse_markCommandInvalidIndex_throwsException() {
         LeoException exception = assertThrows(LeoException.class, () -> Parser.parse("mark abc"));

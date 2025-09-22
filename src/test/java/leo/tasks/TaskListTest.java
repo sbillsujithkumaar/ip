@@ -1,17 +1,17 @@
 package leo.tasks;
 
-import leo.LeoException;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import leo.LeoException;
 
 /**
  * Essential test suite for the TaskList class.
@@ -43,6 +43,9 @@ public class TaskListTest {
     }
 
     // Test find method - core functionality
+    /**
+     * Tests that find method returns exact matches correctly.
+     */
     @Test
     public void find_exactMatch_returnsMatchingTasks() {
         List<Task> results = taskList.find("book");
@@ -50,6 +53,9 @@ public class TaskListTest {
         assertSame(todo1, results.get(0));
     }
 
+    /**
+     * Tests that find method returns partial matches correctly.
+     */
     @Test
     public void find_partialMatch_returnsMatchingTasks() {
         List<Task> results = taskList.find("read");
@@ -57,6 +63,9 @@ public class TaskListTest {
         assertSame(todo1, results.get(0));
     }
 
+    /**
+     * Tests that find method is case-insensitive.
+     */
     @Test
     public void find_caseInsensitive_returnsMatchingTasks() {
         List<Task> results = taskList.find("BOOK");
@@ -64,6 +73,9 @@ public class TaskListTest {
         assertSame(todo1, results.get(0));
     }
 
+    /**
+     * Tests that find method returns all matching tasks when multiple matches exist.
+     */
     @Test
     public void find_multipleMatches_returnsAllMatchingTasks() {
         List<Task> results = taskList.find("e");
@@ -74,12 +86,18 @@ public class TaskListTest {
         assertTrue(results.contains(event1));
     }
 
+    /**
+     * Tests that find method returns empty list when no matches found.
+     */
     @Test
     public void find_noMatches_returnsEmptyList() {
         List<Task> results = taskList.find("xyz");
         assertTrue(results.isEmpty());
     }
 
+    /**
+     * Tests that find method with empty keyword returns all tasks.
+     */
     @Test
     public void find_emptyKeyword_returnsAllTasks() {
         List<Task> results = taskList.find("");
@@ -90,6 +108,9 @@ public class TaskListTest {
         assertTrue(results.contains(event1));
     }
 
+    /**
+     * Tests that find method works with deadline task descriptions.
+     */
     @Test
     public void find_deadlineDescription_returnsMatchingTasks() {
         List<Task> results = taskList.find("assignment");
@@ -97,6 +118,9 @@ public class TaskListTest {
         assertSame(deadline1, results.get(0));
     }
 
+    /**
+     * Tests that find method works with event task descriptions.
+     */
     @Test
     public void find_eventDescription_returnsMatchingTasks() {
         List<Task> results = taskList.find("meeting");
@@ -104,6 +128,9 @@ public class TaskListTest {
         assertSame(event1, results.get(0));
     }
 
+    /**
+     * Tests that find method returns empty list when task list is empty.
+     */
     @Test
     public void find_emptyTaskList_returnsEmptyList() {
         TaskList emptyList = new TaskList();
@@ -112,6 +139,9 @@ public class TaskListTest {
     }
 
     // Test other essential TaskList methods
+    /**
+     * Tests that adding a task increases the list size.
+     */
     @Test
     public void add_taskIncreasesSize() {
         int initialSize = taskList.size();
@@ -120,18 +150,27 @@ public class TaskListTest {
         assertEquals(initialSize + 1, taskList.size());
     }
 
+    /**
+     * Tests that getting task at valid index returns correct task.
+     */
     @Test
     public void get_validIndex_returnsCorrectTask() {
         Task retrievedTask = taskList.get(0);
         assertSame(todo1, retrievedTask);
     }
 
+    /**
+     * Tests that getting task at invalid index throws AssertionError.
+     */
     @Test
     public void get_invalidIndex_throwsException() {
         assertThrows(AssertionError.class, () -> taskList.get(-1));
         assertThrows(AssertionError.class, () -> taskList.get(100));
     }
 
+    /**
+     * Tests that removing task at valid index returns removed task and decreases size.
+     */
     @Test
     public void remove_validIndex_returnsRemovedTask() {
         Task removedTask = taskList.remove(0);
@@ -139,6 +178,9 @@ public class TaskListTest {
         assertEquals(3, taskList.size());
     }
 
+    /**
+     * Tests that validating invalid index throws LeoException.
+     */
     @Test
     public void validateIndex_invalidIndex_throwsException() {
         assertThrows(LeoException.class, () -> taskList.validateIndex(-1));
