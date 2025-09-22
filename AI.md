@@ -10,6 +10,7 @@ quality guidelines, and draft examples of commit messages.
   clearly.
 - Gave guidance when I encountered Git merge or Gradle build issues.
 - Provided examples of how to format commit messages to follow SE-EDU conventions.
+- Provided examples of what type of extensive Junit tests can be done
 
 ## Observations
 

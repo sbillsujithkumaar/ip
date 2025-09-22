@@ -16,6 +16,15 @@ public class AddCommand extends Command {
         this.task = task;
     }
 
+    /**
+     * Returns the task to be added.
+     *
+     * @return the task
+     */
+    public Task getTask() {
+        return task;
+    }
+
     // Use Storage to save changes
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws LeoException {
