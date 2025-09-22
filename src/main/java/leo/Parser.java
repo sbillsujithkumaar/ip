@@ -158,7 +158,12 @@ public class Parser {
     /**
      * Parses the find command.
      */
-    private static Command parseFindCommand(String input) {
+    private static Command parseFindCommand(String input) throws LeoException {
+        // Check if input is just "find" without keyword
+        if (input.length() <= FIND_KEYWORD_START) {
+            throw new LeoException("Find what? Provide a keyword!");
+        }
+        
         String searchKeyword = input.substring(FIND_KEYWORD_START);
         return new FindCommand(searchKeyword);
     }
@@ -210,6 +215,11 @@ public class Parser {
     }
 
     private static String parseTodo(String input) throws LeoException {
+        // Check if input is just "todo" without description
+        if (input.length() <= TODO_DESC_START) {
+            throw new LeoException("Todo what? It's an empty todo");
+        }
+        
         String desc = input.substring(TODO_DESC_START).trim();
         if (desc.isEmpty()) {
             throw new LeoException("Todo what? It's an empty todo");
@@ -219,6 +229,11 @@ public class Parser {
     }
 
     private static Deadline parseDeadline(String input) throws LeoException {
+        // Check if input is too short to contain deadline command
+        if (input.length() <= DEADLINE_BODY_START) {
+            throw new LeoException("Wrong format. Input: deadline <description> /by <deadline>");
+        }
+        
         String body = input.substring(DEADLINE_BODY_START).trim();
         int byIdx = body.indexOf(DEADLINE_SEPARATOR);
 
@@ -245,6 +260,11 @@ public class Parser {
     }
 
     private static Event parseEvent(String input) throws LeoException {
+        // Check if input is too short to contain event command
+        if (input.length() <= EVENT_BODY_START) {
+            throw new LeoException("Wrong format. Input:  event <description> /from <start> /to <end>");
+        }
+        
         String body = input.substring(EVENT_BODY_START).trim();
         int fromIdx = body.indexOf(EVENT_FROM_SEPARATOR);
         int toIdx = body.indexOf(EVENT_TO_SEPARATOR);
