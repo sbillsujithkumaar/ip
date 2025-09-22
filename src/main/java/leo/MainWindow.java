@@ -37,6 +37,9 @@ public class MainWindow extends AnchorPane {
     private Image userImage = new Image(this.getClass().getResourceAsStream(USER_IMAGE_PATH));
     private Image dukeImage = new Image(this.getClass().getResourceAsStream(DUKE_IMAGE_PATH));
 
+    /**
+     * Initializes the GUI components after FXML loading.
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
@@ -53,7 +56,6 @@ public class MainWindow extends AnchorPane {
         DialogBox welcomeDialog = DialogBox.getLeoDialog(welcomeMessage, dukeImage);
         dialogContainer.getChildren().add(welcomeDialog);
     }
-
 
     /**
      * Handles user input by creating dialog boxes and processing the response.

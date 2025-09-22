@@ -45,7 +45,6 @@ public class Parser {
     private static final int EVENT_FROM_SEPARATOR_LENGTH = 7;
     private static final int EVENT_TO_SEPARATOR_LENGTH = 5;
 
-
     // Date format
     private static final DateTimeFormatter DEADLINE_IN = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 

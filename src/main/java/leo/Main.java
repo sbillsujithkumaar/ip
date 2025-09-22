@@ -15,6 +15,11 @@ public class Main extends Application {
 
     private Leo leo = new Leo("data/tasks.txt");
 
+    /**
+     * Starts the JavaFX application by loading the main window.
+     *
+     * @param stage the primary stage for this application
+     */
     @Override
     public void start(Stage stage) {
         try {

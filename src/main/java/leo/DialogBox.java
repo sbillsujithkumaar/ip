@@ -48,10 +48,24 @@ public class DialogBox extends HBox {
         setAlignment(Pos.TOP_LEFT);
     }
 
+    /**
+     * Creates a dialog box for user messages.
+     *
+     * @param text the message text
+     * @param img the user image
+     * @return a DialogBox instance for user messages
+     */
     public static DialogBox getUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }
 
+    /**
+     * Creates a dialog box for Leo's messages.
+     *
+     * @param text the message text
+     * @param img the Leo image
+     * @return a DialogBox instance for Leo's messages
+     */
     public static DialogBox getLeoDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();

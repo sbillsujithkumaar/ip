@@ -64,10 +64,21 @@ public class Leo {
         }
     }
 
+    /**
+     * Main entry point for the Leo application.
+     *
+     * @param args command line arguments (not used)
+     */
     public static void main(String[] args) {
         new Leo(DEFAULT_TASK_FILE_PATH).run();
     }
 
+    /**
+     * Captures the output from a Runnable operation.
+     *
+     * @param r the runnable to execute
+     * @return the captured output as a string
+     */
     private String captureOutput(Runnable r) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream prev = System.out;
